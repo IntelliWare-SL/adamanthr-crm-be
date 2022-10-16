@@ -1,0 +1,42 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --verbose --coverage --runInBand --forceExit --silent",
+    "dev": "nodemon --exec babel-node src/index",
+    "start": "npm run build && node dist/index.js",
+    "build": "babel src --out-dir dist",
+    "test-controllers": "npm test -t controllers"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@firebase/storage": "^0.9.4",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.0",
+    "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
+    "express": "^4.17.1",
+    "firebase": "^9.6.10",
+    "firebase-admin": "^11.0.1",
+    "firebase-functions": "^3.14.1",
+    "jest": "^27.4.3",
+    "joi": "^17.5.0",
+    "jsonwebtoken": "^8.5.1",
+    "knex": "^2.3.0",
+    "lodash": "^4.17.21",
+    "moment": "^2.29.1",
+    "multer": "^1.4.4",
+    "pg": "8.0.3",
+    "supertest": "^6.1.6"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.16.0",
+    "@babel/core": "^7.16.0",
+    "@babel/node": "^7.16.0",
+    "@babel/preset-env": "^7.16.4",
+    "prettier": "^2.5.1"
+  }
+}
