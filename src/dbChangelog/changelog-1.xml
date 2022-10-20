@@ -10,7 +10,7 @@
     <changeSet author="mahela" id="1">
         <createTable tableName="user" schemaName="public">
 
-            <column name="id" type="${uuid_type}" defaultValueComputed="${uuid_function}">
+            <column name="id" type="text" defaultValueComputed="${uuid_function}">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_user_id" unique="true"/>
             </column>
             <column name="first_name" type="VARCHAR(25)">
@@ -40,7 +40,7 @@
 
     <changeSet author="mahela" id="2">
         <createTable tableName="user_type" schemaName="public">
-            <column name="id" type="${uuid_type}" defaultValueComputed="${uuid_function}">
+            <column name="id" type="text" defaultValueComputed="${uuid_function}">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_user_type" unique="true"/>
             </column>
             <column name="type" type="VARCHAR(25)">

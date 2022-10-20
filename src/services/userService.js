@@ -34,7 +34,7 @@ const login = async(data) =>{
 
   if (result) {
     delete user.password;
-    const jsontoken = sign({ result: user }, "qwe1234", {
+    const jsontoken = sign({ result: user }, process.env.JWT_PRIVATE_KEY, {
       expiresIn: "1day",
     });
     return jsontoken

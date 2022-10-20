@@ -10,11 +10,10 @@ const addUserToDB = async (data) => {
 
 const getUserByEmail = async (email) => {
   const result = await getDb()(CONSTANTS.USER_TABLE.NAME)
-      // .leftJoin(CONSTANTS.ROLE_TABLE.NAME, `${CONSTANTS.ROLE_TABLE.NAME}.${CONSTANTS.ROLE_TABLE.TYPE}`,
-      //   `${CONSTANTS.USER_TABLE.NAME}.${CONSTANTS.USER_TABLE.TYPE}`)
+      .leftJoin(CONSTANTS.ROLE_TABLE.NAME, `${CONSTANTS.ROLE_TABLE.NAME}.${CONSTANTS.ROLE_TABLE.ID}`,
+        `${CONSTANTS.USER_TABLE.NAME}.${CONSTANTS.USER_TABLE.TYPE}`)
     .select(CONSTANTS.COMMON.SELECT_ALL)
-    .where(CONSTANTS.USER_TABLE.EMAIL, email)
-    ;
+    .where(CONSTANTS.USER_TABLE.EMAIL, email);
   return result[CONSTANTS.COMMON.ZERO_INDEX];
 };
 
