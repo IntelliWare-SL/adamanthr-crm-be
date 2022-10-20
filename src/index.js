@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
-import { initializeFirebase } from "./utils/firebase-config";
 import router from "./routes/index"
+require("dotenv").config();
 
 const app = express();
 
@@ -16,7 +16,6 @@ app.use("/api/v1", router);
 
 const start = () => {
   try {
-    initializeFirebase();
     return app.listen(process.env.PORT, () => {
       console.log(`REST API on ${process.env.PORT}`);
     });
