@@ -40,7 +40,7 @@ const loginUser = async (req,res) =>{
   const body = validate.value;
   try {
     const result = await userService.login(body);
-    res.status(201).send(result);
+    res.status(201).send({accessToken: result});
   } catch (error) {
     errorHandler(error.message, res, error.code || CONSTANTS.ERROR_CODES.BAD_REQUEST)
   }
