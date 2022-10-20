@@ -1,25 +1,21 @@
+const schema = "public"
+
 export default {
   USER_TABLE: {
-    NAME: "vida-fan.user",
-    UID: "uid",
-    FIRST_NAME: "firstName",
-    LAST_NAME: "lastName",
-    ROLE: "role",
+    NAME: `user`,
+    ID: "id",
+    FIRST_NAME: "first_name",
+    LAST_NAME: "last_name",
+    TYPE: "type",
     EMAIL: "email",
-    SEX: "sex",
-    DOB: "dob",
-    ADDRESS: "address",
-    FAVOURITE_SPORT: "favouriteSport",
-    FAVOURITE_CLUB: "favouriteClub",
   },
   ROLE_TABLE: {
-    NAME: "vida-fan.role",
+    NAME: `user_type`,
     ID: "id",
-    name: "name",
-    DESCRIPTION: "description",
+    TYPE: "type",
     values: {
       ADMIN: "admin",
-      USER: "user",
+      EMPLOYEE: "employee",
     },
   },
   COMMON: {
@@ -27,6 +23,7 @@ export default {
     SELECT_ALL: "*",
     DESC: "desc",
     ASC: "asc",
+    ZERO_INDEX : 0
   },
   STORAGE: {
     BUCKET_NAME: "gs://vida-fan.appspot.com",
@@ -34,4 +31,9 @@ export default {
       USERS: "vida-fan/images/users/",
     },
   },
+  ERROR_CODES: {
+    NOT_FOUND: 404,
+    BAD_REQUEST: 400,
+    UNAUTHORIZED: 401
+  }
 };

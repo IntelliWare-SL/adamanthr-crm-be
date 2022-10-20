@@ -1,7 +1,9 @@
 import express from "express";
-import {testController} from "../controllers/userController";
+import adminRoutes from "./userRoutes/adminRoutes";
+import employeeRoutes from "./userRoutes/employeeRoutes";
 const router = express.Router();
 
-router.route("/test").get(testController);
+router.use("/admin", adminRoutes)
+router.use("/employee", employeeRoutes)
 
 export default router;

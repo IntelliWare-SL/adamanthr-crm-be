@@ -11,3 +11,7 @@ $$ LANGUAGE plpgsql;
 uuid function - >
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+
+liquibase update --changelog-file changelog-1.xml
+liquibase update --changelog-file pre-data-changelog-1.xml
