@@ -3,86 +3,58 @@
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
+
+    <property name="uuid_type" value="uuid" dbms="postgresql"/>
+    <property name="uuid_function" value="uuid_generate_v4()" dbms="postgresql"/>
+
     <changeSet author="mahela" id="1">
         <createTable tableName="user" schemaName="public">
-            <column name="firstName" type="VARCHAR(25)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="lastName" type="VARCHAR(25)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="role" type="VARCHAR(10)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="userId" type="VARCHAR(30)">
+
+            <column name="id" type="${uuid_type}" defaultValueComputed="${uuid_function}">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_user_id" unique="true"/>
             </column>
-            <column name="createdAt" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+            <column name="first_name" type="VARCHAR(25)">
+                <constraints nullable="false"/>
             </column>
-            <column name="referredBy" type="VARCHAR(30)">
-                <constraints nullable="true"/>
+            <column name="last_name" type="VARCHAR(25)">
+                <constraints nullable="false"/>
             </column>
-            <column name="longitude" type="VARCHAR(20)">
-                <constraints nullable="true"/>
+            <column name="type" type="${uuid_type}">
+                <constraints nullable="false"/>
             </column>
-            <column name="location" type="VARCHAR(255)">
-                <constraints nullable="true"/>
+            <column name="email" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_user_id" unique="true"/>
             </column>
-            <column name="latitude" type="VARCHAR(20)">
-                <constraints nullable="true"/>
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false" />
             </column>
-            <column name="archived" type="BOOLEAN" defaultValueBoolean="false">
+            <column name="phone" type="VARCHAR(20)">
+                <constraints nullable="false" />
+            </column>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+            </column>
+            <column name="updated_at" type="TIMESTAMP">
             </column>
         </createTable>
     </changeSet>
 
     <changeSet author="mahela" id="2">
-        <createTable tableName="contactMethod" schemaName="public">
+        <createTable tableName="user_type" schemaName="public">
+            <column name="id" type="${uuid_type}" defaultValueComputed="${uuid_function}">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_user_type" unique="true"/>
+            </column>
             <column name="type" type="VARCHAR(25)">
                 <constraints nullable="false"/>
-            </column>
-            <column name="contactMethodIcon" type="VARCHAR(50)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="contactMethodId" type="VARCHAR(10)">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_contact_method" unique="true"/>
             </column>
         </createTable>
     </changeSet>
 
     <changeSet author="mahela" id="3">
-        <createTable tableName="userContactMethod" schemaName="public">
-            <column name="contactMethodId" type="VARCHAR(10)">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_user_contact_method"
-                />
-            </column>
-            <column name="value" type="VARCHAR(255)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="userId" type="VARCHAR(30)">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_user_contact_method"
-                />
-            </column>
-            <column name="visibility" type="BOOLEAN" defaultValueBoolean="false">
-            </column>
-        </createTable>
-    </changeSet>
-
-    <changeSet author="mahela" id="4">
-        <addForeignKeyConstraint baseColumnNames="userId"
-                                 baseTableName="userContactMethod"
-                                 constraintName="fk_user_social_media_user"
-                                 referencedColumnNames="userId"
-                                 referencedTableName="user"
-        />
-    </changeSet>
-
-    <changeSet author="mahela" id="5">
-        <addForeignKeyConstraint baseColumnNames="contactMethodId"
-                                 baseTableName="userContactMethod"
-                                 constraintName="fk_user_social_media_social_media"
-                                 referencedColumnNames="contactMethodId"
-                                 referencedTableName="contactMethod"
+        <addForeignKeyConstraint baseColumnNames="type"
+                                 baseTableName="user"
+                                 constraintName="fk_user_user_type"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user_type"
         />
     </changeSet>
 
