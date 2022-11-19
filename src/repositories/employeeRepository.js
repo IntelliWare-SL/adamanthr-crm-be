@@ -1,7 +1,7 @@
 import {getDb} from "../utils/db";
 import CONSTANTS from "../utils/const";
 
-const addEmployeeToDB = async (addressData, userData, employeeDetailsData) => {
+const addEmployeeToDB = async (userData, addressData, employeeDetailsData) => {
   const result = await getDb()
     .transaction(function (trx) {
       return trx
