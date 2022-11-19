@@ -61,7 +61,7 @@ const addEmployee = async (data) => {
     daily_rate: data.daily_rate
   }
 
-  return employeeRepository.addEmployeeToDB(addressData, userData, employeeDetailsData);
+  return employeeRepository.addEmployeeToDB(userData, addressData, employeeDetailsData);
 };
 
 const getAllEmployees = async () => {
