@@ -1,4 +1,4 @@
-import { getDb } from "../utils/db";
+import {getDb} from "../utils/db";
 import CONSTANTS from "../utils/const";
 
 const addUserToDB = async (data) => {
@@ -10,18 +10,18 @@ const addUserToDB = async (data) => {
 
 const getUserByEmail = async (email) => {
   const result = await getDb()(CONSTANTS.USER_TABLE.NAME)
-      .leftJoin(CONSTANTS.ROLE_TABLE.NAME, `${CONSTANTS.ROLE_TABLE.NAME}.${CONSTANTS.ROLE_TABLE.ID}`,
-        `${CONSTANTS.USER_TABLE.NAME}.${CONSTANTS.USER_TABLE.TYPE}`)
+    .leftJoin(CONSTANTS.USER_ROLE_TABLE.NAME, `${CONSTANTS.USER_ROLE_TABLE.NAME}.${CONSTANTS.USER_ROLE_TABLE.ID}`,
+      `${CONSTANTS.USER_TABLE.NAME}.${CONSTANTS.USER_TABLE.ROLE}`)
     .select(CONSTANTS.COMMON.SELECT_ALL)
     .where(CONSTANTS.USER_TABLE.EMAIL, email);
   return result[CONSTANTS.COMMON.ZERO_INDEX];
 };
 
 const getUserTypeIdByName = async (name) => {
-  const result = await getDb()(CONSTANTS.ROLE_TABLE.NAME)
-    .select(CONSTANTS.ROLE_TABLE.ID)
-    .where(CONSTANTS.ROLE_TABLE.TYPE, name);
-  return result[CONSTANTS.COMMON.ZERO_INDEX][CONSTANTS.ROLE_TABLE.ID];
+  const result = await getDb()(CONSTANTS.USER_ROLE_TABLE.NAME)
+    .select(CONSTANTS.USER_ROLE_TABLE.ID)
+    .where(CONSTANTS.USER_ROLE_TABLE.ROLE, name);
+  return result[CONSTANTS.COMMON.ZERO_INDEX][CONSTANTS.USER_ROLE_TABLE.ID];
 };
 
 export default { getUserByEmail, addUserToDB, getUserTypeIdByName };
