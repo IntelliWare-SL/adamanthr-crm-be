@@ -6,22 +6,27 @@ export default {
     ID: "id",
     FIRST_NAME: "first_name",
     LAST_NAME: "last_name",
-    TYPE: "role",
+    ROLE: "role",
     EMAIL: "email",
     PASSWORD: "password",
     CONTACT_NO: "contact_no",
     IS_PHONE_VERIFIED: "is_phone_verified",
     GENDER: "gender",
     STATUS: "status",
+    STATUS_VALUES: {
+      ACTIVE: "active",
+      INACTIVE: "inactive",
+      DELETED: "deleted",
+    },
     ADDRESS: "address",
     CREATED_AT: "created_at",
     UPDATED_AT: "updated_at",
   },
-  ROLE_TABLE: {
+  USER_ROLE_TABLE: {
     NAME: `user_role`,
     ID: "id",
-    TYPE: "role",
-    values: {
+    ROLE: "role",
+    ROLE_VALUES: {
       ADMIN: "admin",
       EMPLOYEE: "employee",
     },
