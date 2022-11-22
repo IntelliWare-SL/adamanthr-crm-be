@@ -8,11 +8,21 @@
     <property name="uuid_function" value="uuid_generate_v4()" dbms="postgresql"/>
 
     <changeSet author="sandul" id="1">
+        <renameTable newTableName="user_role"
+                     oldTableName="type"
+                     schemaName="public"/>
+    </changeSet>
+
+    <changeSet author="sandul" id="2">
+        <renameColumn tableName="user_role" schemaName="public" oldColumnName="type" newColumnName="role"/>
+    </changeSet>
+
+    <changeSet author="sandul" id="3">
         <renameColumn tableName="user" schemaName="public" oldColumnName="type" newColumnName="role"/>
         <renameColumn tableName="user" schemaName="public" oldColumnName="phone" newColumnName="contact_no"/>
     </changeSet>
 
-    <changeSet author="sandul" id="2">
+    <changeSet author="sandul" id="4">
         <addColumn catalogName="cat"
                    schemaName="public"
                    tableName="user">
@@ -40,11 +50,11 @@
         </addColumn>
     </changeSet>
 
-    <changeSet author="sandul" id="3">
+    <changeSet author="sandul" id="5">
         <renameTable schemaName="public" oldTableName="user_type" newTableName="user_role"/>
     </changeSet>
 
-    <changeSet author="sandul" id="4">
+    <changeSet author="sandul" id="6">
         <createTable tableName="address" schemaName="public">
             <column name="id" type="${uuid_type}" defaultValueComputed="${uuid_function}">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_address" unique="true"/>
@@ -64,7 +74,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="sandul" id="5">
+    <changeSet author="sandul" id="7">
         <addForeignKeyConstraint baseColumnNames="address"
                                  baseTableName="user"
                                  constraintName="fk_user_address"
@@ -73,7 +83,7 @@
         />
     </changeSet>
 
-    <changeSet author="sandul" id="6">
+    <changeSet author="sandul" id="8">
         <createTable tableName="employee_details" schemaName="public">
             <column name="id" type="${uuid_type}" defaultValueComputed="${uuid_function}">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_employee_details" unique="true"/>
@@ -156,7 +166,7 @@
         </createTable>
     </changeSet>
 
-    <changeSet author="sandul" id="7">
+    <changeSet author="sandul" id="9">
         <addForeignKeyConstraint baseColumnNames="id"
                                  baseTableName="employee_details"
                                  constraintName="fk_employee_details_user"
@@ -165,7 +175,7 @@
         />
     </changeSet>
 
-    <changeSet author="sandul" id="8">
+    <changeSet author="sandul" id="10">
         <addForeignKeyConstraint baseColumnNames="supervisor"
                                  baseTableName="employee_details"
                                  constraintName="fk_employee_supervisor_user"
