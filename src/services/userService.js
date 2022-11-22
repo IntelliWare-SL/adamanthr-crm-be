@@ -1,13 +1,13 @@
-import { genSaltSync, hashSync, compareSync } from "bcrypt"
-import { sign } from "jsonwebtoken";
+import {compareSync, genSaltSync, hashSync} from "bcrypt"
+import {sign} from "jsonwebtoken";
 import userRepository from "../repositories/userRepository";
-import { newError } from "../utils/commonErrorhandler";
+import {newError} from "../utils/commonErrorhandler";
 import CONSTANTS from "../utils/const";
 
 const registerUser = async (data) => {
   const user = await userRepository.getUserByEmail(data.email);
   if (user) {
-    newError(`User already exist for - ${data.email}`, CONSTANTS.ERROR_CODES.BAD_REQUEST)
+    newError(`User already exists for - ${data.email}`, CONSTANTS.ERROR_CODES.BAD_REQUEST)
   }
 
   const salt = genSaltSync(10);

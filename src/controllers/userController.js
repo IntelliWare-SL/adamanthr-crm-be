@@ -1,21 +1,30 @@
 import Joi from "joi";
 import userService from "../services/userService";
 import CONSTANTS from "../utils/const";
-import { errorHandler } from "../utils/commonErrorhandler";
+import {errorHandler} from "../utils/commonErrorhandler";
 
 
 const registerUser = async (req, res) => {
   const schema = Joi.object({
+    role: Joi.string().required(),
     first_name: Joi.string().required(),
     last_name: Joi.string().required(),
-    type: Joi.string().required(),
-    password: Joi.string().required().min(6),
     email: Joi.string().email().required(),
-    phone: Joi.string().required(),
+    password: Joi.string().required().min(6),
+    contact_no: Joi.string().required(),
+    is_phone_verified: Joi.boolean().required(),
+    gender: Joi.string().required(),
+    status: Joi.string().required(),
+    address: Joi.object({
+      postal_code: Joi.string().required(),
+      city: Joi.string().required(),
+      street: Joi.string().required(),
+      country: Joi.string().required(),
+    }),
   });
-  const validate = schema.validate(req.body, { abortEarly: false });
+  const validate = schema.validate(req.body, {abortEarly: false});
   if (validate.error) {
-    res.status(400).send({ message: validate.error.details[CONSTANTS.COMMON.ZERO_INDEX].message });
+    res.status(400).send({message: validate.error.details[CONSTANTS.COMMON.ZERO_INDEX].message});
     return;
   }
   const body = validate.value;
@@ -27,14 +36,14 @@ const registerUser = async (req, res) => {
   }
 };
 
-const loginUser = async (req,res) =>{
+const loginUser = async (req, res) => {
   const schema = Joi.object({
-    password: Joi.string().required().min(6),
     email: Joi.string().email().required(),
+    password: Joi.string().required().min(6),
   });
-  const validate = schema.validate(req.body, { abortEarly: false });
+  const validate = schema.validate(req.body, {abortEarly: false});
   if (validate.error) {
-    res.status(400).send({ message: validate.error.details[CONSTANTS.COMMON.ZERO_INDEX].message });
+    res.status(400).send({message: validate.error.details[CONSTANTS.COMMON.ZERO_INDEX].message});
     return;
   }
   const body = validate.value;
@@ -46,4 +55,4 @@ const loginUser = async (req,res) =>{
   }
 }
 
-export default { registerUser, loginUser };
+export default {registerUser, loginUser};
