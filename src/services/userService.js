@@ -18,7 +18,26 @@ const registerUser = async (data) => {
     newError(`User type is invalid. Please enter a valid user type`, CONSTANTS.ERROR_CODES.BAD_REQUEST)
   }
 
-  return userRepository.addUserToDB(data);
+  const userData = {
+    role: data.type,
+    first_name: data.first_name,
+    last_name: data.last_name,
+    email: data.email,
+    password: data.password,
+    contact_no: data.contact_no,
+    is_phone_verified: data.is_phone_verified,
+    gender: data.gender,
+    status: data.status,
+  }
+
+  const addressData = {
+    postal_code: data.postal_code,
+    city: data.city,
+    street: data.street,
+    country: data.country,
+  }
+
+  return userRepository.addUserToDB(userData, addressData);
 };
 
 const login = async(data) =>{

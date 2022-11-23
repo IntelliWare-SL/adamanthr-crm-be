@@ -1,10 +1,20 @@
 import {getDb} from "../utils/db";
 import CONSTANTS from "../utils/const";
 
-const addUserToDB = async (data) => {
-   const result = await getDb()(CONSTANTS.USER_TABLE.NAME)
-    .insert(data)
-    .returning(CONSTANTS.USER_TABLE.ID);
+const addUserToDB = async (userData, addressData) => {
+  const result = await getDb()
+    .transaction(function (trx) {
+      return trx
+        .insert(addressData, CONSTANTS.ADDRESS_TABLE.ID)
+        .into(CONSTANTS.USER_TABLE.NAME)
+        .then((result) => {
+          userData.address = result[CONSTANTS.COMMON.ZERO_INDEX];
+          return trx
+            .insert(userData, CONSTANTS.USER_TABLE.ID)
+            .into(CONSTANTS.USER_TABLE.NAME)
+        });
+    });
+
   return result[CONSTANTS.COMMON.ZERO_INDEX];
 };
 
