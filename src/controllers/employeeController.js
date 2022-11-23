@@ -1,22 +1,11 @@
 import Joi from "joi";
-import CONSTANTS from "../../utils/const";
-import employeeService from "../../services/employeeService";
-import {errorHandler} from "../../utils/commonErrorhandler";
+import CONSTANTS from "../utils/const";
+import employeeService from "../services/employeeService";
+import {errorHandler} from "../utils/commonErrorhandler";
 
-const addEmployee = async (req, res) => {
+const addEmployeeDetails = async (req, res) => {
   const schema = Joi.object({
-    first_name: Joi.string().required(),
-    last_name: Joi.string().required(),
-    email: Joi.email().required(),
-    password: Joi.string().required().min(6),
-    contact_no: Joi.string().required(),
-    is_phone_verified: Joi.boolean().required(),
-    gender: Joi.string().required(),
-    status: Joi.string().required().valid('active', 'inactive', 'deleted'),
-    postal_code: Joi.string().required(),
-    city: Joi.string().required(),
-    street: Joi.string().required(),
-    country: Joi.string().required(),
+    id: Joi.uid().required(),
     date_of_join: Joi.date().required(),
     employee_id: Joi.string().required(),
     adamant_code: Joi.string().required(),
@@ -50,7 +39,7 @@ const addEmployee = async (req, res) => {
   }
   const body = validate.value;
   try {
-    const result = await employeeService.addEmployee(body);
+    const result = await employeeService.addEmployeeDetails(body);
     res.status(201).send(result);
   } catch (error) {
     errorHandler(error.message, res, error.code || CONSTANTS.ERROR_CODES.BAD_REQUEST)
@@ -66,4 +55,4 @@ const getAllEmployees = async (req, res) => {
   }
 };
 
-export default {addEmployee, getAllEmployees};
+export default {addEmployeeDetails, getAllEmployees};

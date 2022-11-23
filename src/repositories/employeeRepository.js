@@ -1,25 +1,17 @@
 import {getDb} from "../utils/db";
 import CONSTANTS from "../utils/const";
+import userRepository from "./userRepository";
+import {newError} from "../utils/commonErrorhandler";
 
-const addEmployeeToDB = async (userData, addressData, employeeDetailsData) => {
-  const result = await getDb()
-    .transaction(function (trx) {
-      return trx
-        .insert(addressData, CONSTANTS.ADDRESS_TABLE.ID)
-        .into(CONSTANTS.ADDRESS_TABLE.NAME)
-        .then((result) => {
-          userData.address = result[CONSTANTS.COMMON.ZERO_INDEX];
-          return trx
-            .insert(userData, CONSTANTS.USER_TABLE.ID)
-            .into(CONSTANTS.USER_TABLE.NAME)
-            .then((result) => {
-              employeeDetailsData.id = result[CONSTANTS.COMMON.ZERO_INDEX];
-              return trx
-                .insert(employeeDetailsData, CONSTANTS.EMPLOYEE_DETAILS_TABLE.ID)
-                .into(CONSTANTS.EMPLOYEE_DETAILS_TABLE.NAME)
-            });
-        });
-    })
+const addEmployeeDetailsToDB = async (data) => {
+  const user = await userRepository.getUserByEmail(data.email);
+  if (!user) {
+    newError(`User does not exist for - ${data.email}`, CONSTANTS.ERROR_CODES.BAD_REQUEST)
+  }
+
+  const result = await getDb()(CONSTANTS.EMPLOYEE_DETAILS_TABLE.NAME)
+    .insert(data)
+    .returning(CONSTANTS.EMPLOYEE_DETAILS_TABLE.ID);
 
   return result[CONSTANTS.COMMON.ZERO_INDEX];
 };
@@ -34,5 +26,5 @@ const getAllEmployees = async () => {
 }
 
 
-export default {addEmployeeToDB, getAllEmployees};
+export default {addEmployeeDetailsToDB, getAllEmployees};
 
