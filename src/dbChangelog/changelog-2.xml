@@ -9,7 +9,7 @@
 
     <changeSet author="sandul" id="1">
         <renameTable newTableName="user_role"
-                     oldTableName="type"
+                     oldTableName="user_type"
                      schemaName="public"/>
     </changeSet>
 
@@ -26,26 +26,22 @@
         <addColumn catalogName="cat"
                    schemaName="public"
                    tableName="user">
-            <column afterColumn="contact_no"
-                    name="is_phone_verified"
+            <column name="is_phone_verified"
                     type="boolean"
                     defaultValueBoolean="false">
                 <constraints nullable="false"/>
             </column>
-            <column afterColumn="is_phone_verified"
-                    name="gender"
+            <column name="gender"
                     type="varchar(30)">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
-            <column afterColumn="gender"
-                    name="status"
+            <column name="status"
                     type="varchar(255)">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
-            <column afterColumn="status"
-                    name="address"
-                    type="uid">
-                <constraints nullable="false"/>
+            <column name="address"
+                    type="${uuid_type}">
+                <constraints nullable="true"/>
             </column>
         </addColumn>
     </changeSet>
@@ -112,7 +108,7 @@
             <column name="job_location_state" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="on_roll" type="VARCHAR(255)" defaultValueComputed="Adamant HR">
+            <column name="on_roll" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
             <column name="dob" type="DATE">
@@ -167,6 +163,36 @@
     </changeSet>
 
     <changeSet author="sandul" id="9">
+        <modifyDataType columnName="id"
+                        newDataType="${uuid_type}"
+                        schemaName="public"
+                        tableName="user"/>
+    </changeSet>
+
+    <changeSet author="sandul" id="10">
+        <modifyDataType columnName="role"
+                        newDataType="${uuid_type}"
+                        schemaName="public"
+                        tableName="user"/>
+    </changeSet>
+
+    <changeSet author="sandul" id="11">
+        <modifyDataType columnName="id"
+                        newDataType="${uuid_type}"
+                        schemaName="public"
+                        tableName="user_role"/>
+    </changeSet>
+
+    <changeSet author="sandul" id="12">
+        <addForeignKeyConstraint baseColumnNames="role"
+                                 baseTableName="user"
+                                 constraintName="fk_user_user_type"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user_role"
+        />
+    </changeSet>
+
+    <changeSet author="sandul" id="13">
         <addForeignKeyConstraint baseColumnNames="id"
                                  baseTableName="employee_details"
                                  constraintName="fk_employee_details_user"
@@ -175,7 +201,7 @@
         />
     </changeSet>
 
-    <changeSet author="sandul" id="10">
+    <changeSet author="sandul" id="14">
         <addForeignKeyConstraint baseColumnNames="supervisor"
                                  baseTableName="employee_details"
                                  constraintName="fk_employee_supervisor_user"
