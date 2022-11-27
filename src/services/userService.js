@@ -12,35 +12,18 @@ const registerUser = async (data) => {
 
   const salt = genSaltSync(10);
   data.password = hashSync(data.password, salt);
-  data.type = await userRepository.getUserTypeIdByName(data.type);
+  data.role = await userRepository.getUserTypeIdByName(data.role);
 
-  if (!data.type) {
+  if (!data.role) {
     newError(`User type is invalid. Please enter a valid user type`, CONSTANTS.ERROR_CODES.BAD_REQUEST)
   }
 
-  const userData = {
-    role: data.type,
-    first_name: data.first_name,
-    last_name: data.last_name,
-    email: data.email,
-    password: data.password,
-    contact_no: data.contact_no,
-    is_phone_verified: data.is_phone_verified,
-    gender: data.gender,
-    status: data.status,
-  }
-
-  const addressData = {
-    postal_code: data.postal_code,
-    city: data.city,
-    street: data.street,
-    country: data.country,
-  }
-
-  return userRepository.addUserToDB(userData, addressData);
+  const addressData = data.address;
+  delete data.address;
+  return userRepository.addUserToDB(data, addressData);
 };
 
-const login = async(data) =>{
+const login = async (data) => {
   const user = await userRepository.getUserByEmail(data.email);
   if (!user) {
     newError(`User does not exist for - ${data.email}`, CONSTANTS.ERROR_CODES.BAD_REQUEST)
@@ -53,7 +36,7 @@ const login = async(data) =>{
 
   if (result) {
     delete user.password;
-    const jsontoken = sign({ result: user }, process.env.JWT_PRIVATE_KEY, {
+    const jsontoken = sign({result: user}, process.env.JWT_PRIVATE_KEY, {
       expiresIn: "1day",
     });
     return jsontoken
@@ -61,4 +44,4 @@ const login = async(data) =>{
   newError("Passwords does not match. Try Again", CONSTANTS.ERROR_CODES.UNAUTHORIZED)
 }
 
-export default {login, registerUser };
+export default {login, registerUser};

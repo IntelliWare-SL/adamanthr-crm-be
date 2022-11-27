@@ -6,9 +6,9 @@ const addUserToDB = async (userData, addressData) => {
     .transaction(function (trx) {
       return trx
         .insert(addressData, CONSTANTS.ADDRESS_TABLE.ID)
-        .into(CONSTANTS.USER_TABLE.NAME)
+        .into(CONSTANTS.ADDRESS_TABLE.NAME)
         .then((result) => {
-          userData.address = result[CONSTANTS.COMMON.ZERO_INDEX];
+          userData.address = result[CONSTANTS.COMMON.ZERO_INDEX][CONSTANTS.ADDRESS_TABLE.ID];
           return trx
             .insert(userData, CONSTANTS.USER_TABLE.ID)
             .into(CONSTANTS.USER_TABLE.NAME)
@@ -34,4 +34,4 @@ const getUserTypeIdByName = async (name) => {
   return result[CONSTANTS.COMMON.ZERO_INDEX][CONSTANTS.USER_ROLE_TABLE.ID];
 };
 
-export default { getUserByEmail, addUserToDB, getUserTypeIdByName };
+export default {getUserByEmail, addUserToDB, getUserTypeIdByName};
