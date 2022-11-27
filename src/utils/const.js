@@ -40,7 +40,7 @@ export default {
     COUNTRY: "country",
   },
   EMPLOYEE_DETAILS_TABLE: {
-    NAME: `address`,
+    NAME: `employee_details`,
     ID: "id",
     DATE_OF_JOIN: "date_of_join",
     EMPLOYEE_ID: "employee_id",
