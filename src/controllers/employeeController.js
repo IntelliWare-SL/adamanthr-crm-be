@@ -5,13 +5,13 @@ import {errorHandler} from "../utils/commonErrorhandler";
 
 const addEmployeeDetails = async (req, res) => {
   const schema = Joi.object({
-    id: Joi.uid().required(),
+    id: Joi.string().required(),
     date_of_join: Joi.date().required(),
     employee_id: Joi.string().required(),
     adamant_code: Joi.string().required(),
     dol: Joi.date(),
     designation: Joi.string().required(),
-    supervisor: Joi.uid().required(),
+    supervisor: Joi.string().required(),
     job_location: Joi.string().required(),
     job_location_state: Joi.string().required(),
     on_roll: Joi.string(),

@@ -1,13 +1,11 @@
 import {getDb} from "../utils/db";
 import CONSTANTS from "../utils/const";
-import userRepository from "./userRepository";
-import {newError} from "../utils/commonErrorhandler";
 
 const addEmployeeDetailsToDB = async (data) => {
-  const user = await userRepository.getUserByEmail(data.email);
-  if (!user) {
-    newError(`User does not exist for - ${data.email}`, CONSTANTS.ERROR_CODES.BAD_REQUEST)
-  }
+  // const user = await userRepository.getUserByEmail(data.email);
+  // if (!user) {
+  //   newError(`User does not exist for - ${data.email}`, CONSTANTS.ERROR_CODES.BAD_REQUEST)
+  // }
 
   const result = await getDb()(CONSTANTS.EMPLOYEE_DETAILS_TABLE.NAME)
     .insert(data)
