@@ -10,5 +10,7 @@ router.route("/registerUser").post(checkToken, isAdmin, userController.registerU
 router.route("/login").post(userController.loginUser)
 router.route("/addEmployeeDetails").post(checkToken, isAdmin, employeeController.addEmployeeDetails)
 router.route("/getAllEmployees").get(checkToken, isAdmin, employeeController.getAllEmployees)
+router.route("/updateUser").put(checkToken, isAdmin, userController.updateUser)
+router.route("/updateEmployeeDetails").put(checkToken, isAdmin, employeeController.updateEmployeeDetails)
 
 export default router;

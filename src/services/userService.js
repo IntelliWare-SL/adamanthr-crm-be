@@ -44,4 +44,29 @@ const login = async (data) => {
   newError("Passwords does not match. Try Again", CONSTANTS.ERROR_CODES.UNAUTHORIZED)
 }
 
-export default {login, registerUser};
+const updateUser = async (id, data) => {
+  const userId = await userRepository.getUserIdByEmail(data.email);
+  if (userId && userId.id !== id) {
+    newError(`Another account already exists for - ${data.email}`, CONSTANTS.ERROR_CODES.BAD_REQUEST)
+  }
+
+  if (data.password != null) {
+    const salt = genSaltSync(10);
+    data.password = hashSync(data.password, salt);
+  } else {
+    delete data.password;
+  }
+
+  data.role = await userRepository.getUserTypeIdByName(data.role);
+
+  if (!data.role) {
+    newError(`User type is invalid. Please enter a valid user type`, CONSTANTS.ERROR_CODES.BAD_REQUEST)
+  }
+
+  const addressData = data.address;
+  delete data.address;
+
+  return userRepository.updateUserInDB(id, data, addressData);
+};
+
+export default {login, registerUser, updateUser};

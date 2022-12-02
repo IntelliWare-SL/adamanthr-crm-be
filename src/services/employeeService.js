@@ -4,6 +4,10 @@ const addEmployeeDetails = async (data) => {
   return employeeRepository.addEmployeeDetailsToDB(data);
 };
 
+const updateEmployeeDetails = async (id, data) => {
+  return employeeRepository.updateEmployeeDetailsInDB(id, data);
+};
+
 const getAllEmployees = async () => {
   const employees = await employeeRepository.getAllEmployees();
   if (employees != null) {
@@ -11,4 +15,4 @@ const getAllEmployees = async () => {
   }
 };
 
-export default {addEmployeeDetails, getAllEmployees};
+export default {addEmployeeDetails, updateEmployeeDetails, getAllEmployees};
