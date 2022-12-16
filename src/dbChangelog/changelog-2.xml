@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
+
+    <property name="uuid_type" value="uuid" dbms="postgresql"/>
+    <property name="uuid_function" value="uuid_generate_v4()" dbms="postgresql"/>
+
+    <changeSet author="sandul" id="1">
+        <renameTable newTableName="user_role"
+                     oldTableName="user_type"
+                     schemaName="public"/>
+    </changeSet>
+
+    <changeSet author="sandul" id="2">
+        <renameColumn tableName="user_role" schemaName="public" oldColumnName="type" newColumnName="role"/>
+    </changeSet>
+
+    <changeSet author="sandul" id="3">
+        <renameColumn tableName="user" schemaName="public" oldColumnName="type" newColumnName="role"/>
+        <renameColumn tableName="user" schemaName="public" oldColumnName="phone" newColumnName="contact_no"/>
+    </changeSet>
+
+    <changeSet author="sandul" id="4">
+        <addColumn catalogName="cat"
+                   schemaName="public"
+                   tableName="user">
+            <column name="is_phone_verified"
+                    type="boolean"
+                    defaultValueBoolean="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="gender"
+                    type="varchar(30)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="status"
+                    type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="address"
+                    type="${uuid_type}">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+    </changeSet>
+
+    <changeSet author="sandul" id="5">
+        <renameTable schemaName="public" oldTableName="user_type" newTableName="user_role"/>
+    </changeSet>
+
+    <changeSet author="sandul" id="6">
+        <createTable tableName="address" schemaName="public">
+            <column name="id" type="${uuid_type}" defaultValueComputed="${uuid_function}">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_address" unique="true"/>
+            </column>
+            <column name="postal_code" type="VARCHAR(25)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="city" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="street" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="country" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="sandul" id="7">
+        <addForeignKeyConstraint baseColumnNames="address"
+                                 baseTableName="user"
+                                 constraintName="fk_user_address"
+                                 referencedColumnNames="id"
+                                 referencedTableName="address"
+        />
+    </changeSet>
+
+    <changeSet author="sandul" id="8">
+        <createTable tableName="employee_details" schemaName="public">
+            <column name="id" type="${uuid_type}" defaultValueComputed="${uuid_function}">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_employee_details" unique="true"/>
+            </column>
+            <column name="date_of_join" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="employee_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="adamant_code" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="dol" type="DATE">
+                <constraints nullable="true"/>
+            </column>
+            <column name="designation" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="supervisor" type="${uuid_type}" defaultValueComputed="${uuid_function}">
+                <constraints nullable="false"/>
+            </column>
+            <column name="job_location" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="job_location_state" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="on_roll" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="dob" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="emergency_no" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="self_aadhar_no" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="qualification" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="father_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="mother_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="spouse_name" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="esic_no" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="uan" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="pan_no" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="account_no" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ifsc_code" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="bank_name" type="VARCHAR(255)">
+                <constraints nullable="true"/>
+            </column>
+            <column name="permanent_address" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="correspondence_address" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="daily_rate" type="currency">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="sandul" id="9">
+        <modifyDataType columnName="id"
+                        newDataType="${uuid_type}"
+                        schemaName="public"
+                        tableName="user"/>
+    </changeSet>
+
+    <changeSet author="sandul" id="10">
+        <modifyDataType columnName="role"
+                        newDataType="${uuid_type}"
+                        schemaName="public"
+                        tableName="user"/>
+    </changeSet>
+
+    <changeSet author="sandul" id="11">
+        <modifyDataType columnName="id"
+                        newDataType="${uuid_type}"
+                        schemaName="public"
+                        tableName="user_role"/>
+    </changeSet>
+
+    <changeSet author="sandul" id="12">
+        <addForeignKeyConstraint baseColumnNames="role"
+                                 baseTableName="user"
+                                 constraintName="fk_user_user_type"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user_role"
+        />
+    </changeSet>
+
+    <changeSet author="sandul" id="13">
+        <addForeignKeyConstraint baseColumnNames="id"
+                                 baseTableName="employee_details"
+                                 constraintName="fk_employee_details_user"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user"
+        />
+    </changeSet>
+
+    <changeSet author="sandul" id="14">
+        <addForeignKeyConstraint baseColumnNames="supervisor"
+                                 baseTableName="employee_details"
+                                 constraintName="fk_employee_supervisor_user"
+                                 referencedColumnNames="id"
+                                 referencedTableName="user"
+        />
+    </changeSet>
+
+</databaseChangeLog>

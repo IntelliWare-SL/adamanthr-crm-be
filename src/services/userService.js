@@ -1,27 +1,29 @@
-import { genSaltSync, hashSync, compareSync } from "bcrypt"
-import { sign } from "jsonwebtoken";
+import {compareSync, genSaltSync, hashSync} from "bcrypt"
+import {sign} from "jsonwebtoken";
 import userRepository from "../repositories/userRepository";
-import { newError } from "../utils/commonErrorhandler";
+import {newError} from "../utils/commonErrorhandler";
 import CONSTANTS from "../utils/const";
 
 const registerUser = async (data) => {
   const user = await userRepository.getUserByEmail(data.email);
   if (user) {
-    newError(`User already exist for - ${data.email}`, CONSTANTS.ERROR_CODES.BAD_REQUEST)
+    newError(`User already exists for - ${data.email}`, CONSTANTS.ERROR_CODES.BAD_REQUEST)
   }
 
   const salt = genSaltSync(10);
   data.password = hashSync(data.password, salt);
-  data.type = await userRepository.getUserTypeIdByName(data.type);
+  data.role = await userRepository.getUserTypeIdByName(data.role);
 
-  if (!data.type) {
+  if (!data.role) {
     newError(`User type is invalid. Please enter a valid user type`, CONSTANTS.ERROR_CODES.BAD_REQUEST)
   }
 
-  return userRepository.addUserToDB(data);
+  const addressData = data.address;
+  delete data.address;
+  return userRepository.addUserToDB(data, addressData);
 };
 
-const login = async(data) =>{
+const login = async (data) => {
   const user = await userRepository.getUserByEmail(data.email);
   if (!user) {
     newError(`User does not exist for - ${data.email}`, CONSTANTS.ERROR_CODES.BAD_REQUEST)
@@ -34,7 +36,7 @@ const login = async(data) =>{
 
   if (result) {
     delete user.password;
-    const jsontoken = sign({ result: user }, process.env.JWT_PRIVATE_KEY, {
+    const jsontoken = sign({result: user}, process.env.JWT_PRIVATE_KEY, {
       expiresIn: "1day",
     });
     return jsontoken
@@ -42,4 +44,29 @@ const login = async(data) =>{
   newError("Passwords does not match. Try Again", CONSTANTS.ERROR_CODES.UNAUTHORIZED)
 }
 
-export default {login, registerUser };
+const updateUser = async (id, data) => {
+  const userId = await userRepository.getUserIdByEmail(data.email);
+  if (userId && userId.id !== id) {
+    newError(`Another account already exists for - ${data.email}`, CONSTANTS.ERROR_CODES.BAD_REQUEST)
+  }
+
+  if (data.password != null) {
+    const salt = genSaltSync(10);
+    data.password = hashSync(data.password, salt);
+  } else {
+    delete data.password;
+  }
+
+  data.role = await userRepository.getUserTypeIdByName(data.role);
+
+  if (!data.role) {
+    newError(`User type is invalid. Please enter a valid user type`, CONSTANTS.ERROR_CODES.BAD_REQUEST)
+  }
+
+  const addressData = data.address;
+  delete data.address;
+
+  return userRepository.updateUserInDB(id, data, addressData);
+};
+
+export default {login, registerUser, updateUser};
